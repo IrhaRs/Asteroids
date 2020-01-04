@@ -10,7 +10,7 @@ pygame.init()
 fps = 30
 fpsClock = pygame.time.Clock()
  
-width, height = 640, 480
+width, height = 1000, 700
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Astroids by Irha")
 
