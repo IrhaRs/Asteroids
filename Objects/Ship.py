@@ -21,7 +21,7 @@ class Ship:
 	def shoot(self):
 		if self.shootcooldown<=0:
 			self.bullets.append(Bullet.Bullet(self.centerpoint[0],self.centerpoint[1],self.directionvector))
-			self.shootcooldown=20
+			self.shootcooldown=10
 
 
 	def hit(self):

@@ -1,9 +1,10 @@
 
 import sys
- 
+
+import random
 import pygame
 from pygame.locals import *
-from Objects import Ship
+from Objects import Ship,Astroid
 
 pygame.init()
  
@@ -15,7 +16,10 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Astroids by Irha")
 
 ship = Ship.Ship()
- 
+lstAstroids=[]
+for i in range(7):
+	lstAstroids.append(Astroid.Astroid(random.randint(1,360),random.randint(100, 900),random.randint(100,600),(random.randint(4,6)*10)))
+
 # Game loop.
 while True:
 	screen.fill((0, 0, 0))
@@ -25,9 +29,9 @@ while True:
 	else:
 		ship.loseSpeed()
 	if keys[K_LEFT]:
-		ship.rotate(-5)
+		ship.rotate(-8)
 	if keys[K_RIGHT]:
-		ship.rotate(5)
+		ship.rotate(8)
 	if keys[K_TAB]:
 		ship.shoot()
 	for event in pygame.event.get():
@@ -38,8 +42,12 @@ while True:
 
 	# Update
 	ship.update()
+	for i in lstAstroids:
+		i.update()
 	# Draw.
 	ship.draw(screen)
+	for i in lstAstroids:
+		i.draw(screen)
 
 	pygame.display.flip()
 	fpsClock.tick(fps)
