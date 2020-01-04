@@ -28,6 +28,8 @@ while True:
 		ship.rotate(-5)
 	if keys[K_RIGHT]:
 		ship.rotate(5)
+	if keys[K_TAB]:
+		ship.shoot()
 	for event in pygame.event.get():
 
 		if event.type == QUIT:
