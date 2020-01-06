@@ -2,21 +2,39 @@ import pygame
 import math
 
 class Astroid:
-	def __init__(self,rotation,x,y,size):
+	def __init__(self,name,rotation,x,y,size):
+		self.id = name
 		self.centerpoint = (x,y)
 		self.rotation = rotation
 		self.directionvector = (math.cos(math.radians(self.rotation)),math.sin(math.radians(self.rotation))) #direction of the astroid
-		self.size = size
-		self.velocity = 100/(size/2)
+		self.scale = 10
+		self.size = size*self.scale
+		self.velocity = 100/(self.size/2)
 		self.color = (255,255,255)
+		self.debug = True
 
 
 	def hit(self):
-		#get hit
-		pass
+		if (self.size/self.scale) <=2: 
+			self.die() 
+		else:
+			self.split()
+			self.size-=(1*self.scale)
 	def split(self):
-		#split the astroid into two smaller ones.
-		pass
+		print("splitting astroid: "+str(self.id))
+
+	def die(self):
+		print("delete astroid: "+str(self.id))
+
+	def Duplicate(self,rotation,size):
+		return Astroid(rotation,self.centerpoint[0],self.centerpoint[1],size)
+
+	def getAABBShape(self,padding):
+		x =  (self.centerpoint[0]-self.size)-padding
+		y =  (self.centerpoint[1]-self.size)-padding
+		w = ((self.centerpoint[0]+self.size)+padding) -x
+		h =	((self.centerpoint[1]+self.size)+padding) -y
+		return (x,y,w,h)
 
 	def update(self):
 		vx = self.velocity*self.directionvector[0]
@@ -39,3 +57,9 @@ class Astroid:
 
 		pygame.draw.circle(screen, self.color, self.centerpoint, self.size,2)
 
+
+		#Collision box
+		if self.debug:
+			padding = 10
+			x,y,w,h = self.getAABBShape(padding)
+			pygame.draw.rect(screen, (0,0,255),pygame.Rect(x,y,w,h),1)

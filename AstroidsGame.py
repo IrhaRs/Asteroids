@@ -5,6 +5,7 @@ import random
 import pygame
 from pygame.locals import *
 from Objects import Ship,Astroid
+from lib import Collision
 
 pygame.init()
  
@@ -18,7 +19,7 @@ pygame.display.set_caption("Astroids by Irha")
 ship = Ship.Ship()
 lstAstroids=[]
 for i in range(7):
-	lstAstroids.append(Astroid.Astroid(random.randint(1,360),random.randint(100, 900),random.randint(100,600),(random.randint(4,6)*10)))
+	lstAstroids.append(Astroid.Astroid(i,random.randint(1,360),random.randint(100, 900),random.randint(100,600),(random.randint(4,6))))
 
 # Game loop.
 while True:
@@ -44,6 +45,20 @@ while True:
 	ship.update()
 	for i in lstAstroids:
 		i.update()
+	# Collision
+	target = ship
+	for astroid in lstAstroids: 
+		if(Collision.AABB_Collision_rect(astroid.getAABBShape(10),target.getAABBShape(10))):
+			print("astroid "+str(astroid.id)+" hitting target ")
+		for bullet in target.bullets:
+			if (Collision.AABB_Collision_rect(astroid.getAABBShape(10),bullet.getAABBShape(10))):
+				#check for colision with the astroid and the bullets in radius
+				endX,endY = bullet.getEndpoint()
+				if (Collision.Circle_Line_Collision(astroid.centerpoint[0],astroid.centerpoint[1],astroid.size,bullet.position[0],bullet.position[1],endX,endY)):
+					print("Bullet: "+str(bullet.id)+" hitting astroid: " +str(astroid.id))
+					bullet.die()
+					astroid.hit()
+
 	# Draw.
 	ship.draw(screen)
 	for i in lstAstroids:

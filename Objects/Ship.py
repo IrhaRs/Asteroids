@@ -16,13 +16,28 @@ class Ship:
 		self.scale = 20
 		self.color=(255,255,255)
 		self.bullets = []
+		self.bullet_count=0
 		self.shootcooldown=0
+		self.debug=True
 
 	def shoot(self):
 		if self.shootcooldown<=0:
-			self.bullets.append(Bullet.Bullet(self.centerpoint[0],self.centerpoint[1],self.directionvector))
+			self.bullets.append(Bullet.Bullet(self.centerpoint[0],self.centerpoint[1],self.directionvector,self.bullet_count,self))
+			self.bullet_count+=1
 			self.shootcooldown=10
 
+	def removeBullet(self,name):
+		for i in self.bullets:
+			if i.id == name:
+				print("delete: "+str(name))
+				self.bullets.remove(i)
+
+	def getAABBShape(self,padding):
+		x =  (self.centerpoint[0]-self.scale)-padding
+		y =  (self.centerpoint[1]-self.scale)-padding
+		w = ((self.centerpoint[0]+self.scale)+padding) -x
+		h =	((self.centerpoint[1]+self.scale)+padding) -y
+		return (x,y,w,h)
 
 	def hit(self):
 		#destroy ship + game over 
@@ -75,4 +90,11 @@ class Ship:
 
 		pygame.draw.polygon(screen,self.color,points)
 		pygame.draw.circle(screen, (255,0,0), self.centerpoint, 1)
+
+
+		#Collision box
+		if self.debug:
+			padding = 10
+			x,y,w,h = self.getAABBShape(padding)
+			pygame.draw.rect(screen, (0,0,255),pygame.Rect(x,y,w,h),1)
 
