@@ -6,6 +6,7 @@ import pygame
 from pygame.locals import *
 from Objects import Ship,Astroid
 from lib import Collision
+import copy
 
 pygame.init()
  
@@ -30,9 +31,9 @@ while True:
 	else:
 		ship.loseSpeed()
 	if keys[K_LEFT]:
-		ship.rotate(-8)
+		ship.rotate(-5)
 	if keys[K_RIGHT]:
-		ship.rotate(8)
+		ship.rotate(5)
 	if keys[K_TAB]:
 		ship.shoot()
 	for event in pygame.event.get():
@@ -57,7 +58,14 @@ while True:
 				if (Collision.Circle_Line_Collision(astroid.centerpoint[0],astroid.centerpoint[1],astroid.size,bullet.position[0],bullet.position[1],endX,endY)):
 					print("Bullet: "+str(bullet.id)+" hitting astroid: " +str(astroid.id))
 					bullet.die()
-					astroid.hit()
+					if astroid.hit():
+						lstAstroids.remove(astroid)
+					else:
+						dup_astroid = copy.deepcopy(astroid)
+						dup_astroid.id = dup_astroid.id+500
+						astroid.rotate(30)
+						dup_astroid.rotate(-30)
+						lstAstroids.append(dup_astroid)
 
 	# Draw.
 	ship.draw(screen)

@@ -13,21 +13,18 @@ class Astroid:
 		self.color = (255,255,255)
 		self.debug = True
 
-
 	def hit(self):
+		onDestroy=False
 		if (self.size/self.scale) <=2: 
-			self.die() 
+			onDestroy=True
 		else:
-			self.split()
-			self.size-=(1*self.scale)
-	def split(self):
-		print("splitting astroid: "+str(self.id))
+			self.size-=self.scale
+		return onDestroy
 
-	def die(self):
-		print("delete astroid: "+str(self.id))
-
-	def Duplicate(self,rotation,size):
-		return Astroid(rotation,self.centerpoint[0],self.centerpoint[1],size)
+	def rotate(self,degrees):
+		self.rotation +=degrees
+		self.directionvector = (math.cos(math.radians(self.rotation)),math.sin(math.radians(self.rotation))) #the tip of the ship
+		
 
 	def getAABBShape(self,padding):
 		x =  (self.centerpoint[0]-self.size)-padding
@@ -52,9 +49,7 @@ class Astroid:
 
 		self.centerpoint= (math.floor(cx+vx),math.floor(cy+vy))
 
-
 	def draw(self,screen):
-
 		pygame.draw.circle(screen, self.color, self.centerpoint, self.size,2)
 
 
