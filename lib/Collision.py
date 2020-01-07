@@ -2,8 +2,11 @@ import math
 
 
 def Circle_Circle_Collision(c1x,c1y,c1r,c2x,c2y,c2r):
-	#circle to circle Collision 
-	pass
+	distance = Distance_Line(c1x,c1y,c2x,c2y)
+	if c1r+c2r >=distance:
+		return True
+	return False
+	
 
 def Circle_Line_Collision(cx,cy,cr,lsx,lsy,lex,ley):
 	#circle to line/vector segment Collision 

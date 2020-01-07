@@ -3,8 +3,8 @@ import math
 from Objects import Bullet
 
 class Ship:
-	def __init__(self):
-		self.centerpoint = (100,100) # center of the ship		
+	def __init__(self,x,y):
+		self.centerpoint = (x,y) # center of the ship		
 		self.rotation = -90 #rotation in degrees
 		self.directionvector = (math.cos(math.radians(self.rotation)),math.sin(math.radians(self.rotation))) #the tip of the ship
 		self.backleft=(math.cos(math.radians(self.rotation+140)),math.sin(math.radians(self.rotation+140)))
@@ -18,13 +18,17 @@ class Ship:
 		self.bullets = []
 		self.bullet_count=0
 		self.shootcooldown=0
-		self.debug=True
+		self.debug=False
 
 	def shoot(self):
 		if self.shootcooldown<=0:
 			self.bullets.append(Bullet.Bullet(self.centerpoint[0],self.centerpoint[1],self.directionvector,self.bullet_count,self))
 			self.bullet_count+=1
 			self.shootcooldown=10
+
+	def getHitbox(self):
+		x,y = self.centerpoint
+		return(x,y,self.scale/1.2)
 
 	def removeBullet(self,name):
 		for i in self.bullets:
@@ -39,9 +43,7 @@ class Ship:
 		h =	((self.centerpoint[1]+self.scale)+padding) -y
 		return (x,y,w,h)
 
-	def hit(self):
-		#destroy ship + game over 
-		pass
+
 	def rotate(self,degrees):
 		self.rotation +=degrees
 		self.directionvector = (math.cos(math.radians(self.rotation)),math.sin(math.radians(self.rotation))) #the tip of the ship
@@ -97,4 +99,5 @@ class Ship:
 			padding = 10
 			x,y,w,h = self.getAABBShape(padding)
 			pygame.draw.rect(screen, (0,0,255),pygame.Rect(x,y,w,h),1)
-
+			cx,cy,cr= self.getHitbox()
+			pygame.draw.circle(screen,(0,255,0),(cx,cy),math.floor(cr),1)

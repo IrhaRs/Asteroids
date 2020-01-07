@@ -11,7 +11,7 @@ class Astroid:
 		self.size = size*self.scale
 		self.velocity = 100/(self.size/2)
 		self.color = (255,255,255)
-		self.debug = True
+		self.debug = False
 
 	def hit(self):
 		onDestroy=False
