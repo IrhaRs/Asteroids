@@ -1,6 +1,7 @@
 import pygame
 import math
 from Objects import Bullet
+import Settings as s
 
 class Ship:
 	def __init__(self,x,y):
@@ -10,6 +11,7 @@ class Ship:
 		self.backleft=(math.cos(math.radians(self.rotation+140)),math.sin(math.radians(self.rotation+140)))
 		self.backright=(math.cos(math.radians(self.rotation+220)),math.sin(math.radians(self.rotation+220)))
 		self.acceleration = 0.5
+		self.minvelocity=1
 		self.velocity = 0
 		self.velocitymax = 10
 		self.rotationspeed = 1
@@ -18,7 +20,7 @@ class Ship:
 		self.bullets = []
 		self.bullet_count=0
 		self.shootcooldown=0
-		self.debug=False
+		self.debug=s.DEBUG
 
 	def shoot(self):
 		if self.shootcooldown<=0:
@@ -28,7 +30,7 @@ class Ship:
 
 	def getHitbox(self):
 		x,y = self.centerpoint
-		return(x,y,self.scale/1.2)
+		return(x,y,self.scale/1.3)
 
 	def removeBullet(self,name):
 		for i in self.bullets:
@@ -56,10 +58,11 @@ class Ship:
 			self.velocity+=self.acceleration
 
 	def loseSpeed(self):
-		if self.velocity >0:
-			self.velocity-= (self.acceleration*2)
-		if self.velocity<0:
-			self.velocity=0
+		if self.velocity !=0:
+			if self.velocity >self.minvelocity:
+				self.velocity-= (self.acceleration*(self.velocity/10))
+			elif self.velocity<self.minvelocity:
+				self.velocity=self.minvelocity
 
 	def update(self):
 		vx = self.velocity*self.directionvector[0]
@@ -70,14 +73,14 @@ class Ship:
 		for b in self.bullets:
 			b.update()
 		if cx<0-10:
-			cx=9+1000
-		elif cx>1000+10:
+			cx=9+s.WIDTH
+		elif cx>s.WIDTH+10:
 			cx = -9
 		if cy<0-10:
-			cy=700+9
-		elif cy>700+10:
+			cy=s.HEIGHT+9
+		elif cy>s.HEIGHT+10:
 			cy=-9
-		self.centerpoint= (math.floor(cx+vx),math.floor(cy+vy))
+		self.centerpoint= (round(cx+vx),round(cy+vy))
 
 
 

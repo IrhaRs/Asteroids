@@ -1,5 +1,7 @@
 import pygame
 import math
+import Settings as s
+
 
 class Astroid:
 	def __init__(self,name,rotation,x,y,size):
@@ -11,7 +13,7 @@ class Astroid:
 		self.size = size*self.scale
 		self.velocity = 100/(self.size/2)
 		self.color = (255,255,255)
-		self.debug = False
+		self.debug = s.DEBUG
 
 	def hit(self):
 		onDestroy=False
@@ -39,12 +41,12 @@ class Astroid:
 		cx,cy=self.centerpoint
 
 		if cx<0-self.size:
-			cx = 1000+self.size-1
-		elif cx>1000+self.size:
+			cx = s.WIDTH+self.size-1
+		elif cx>s.WIDTH+self.size:
 			cx=0-self.size+1
 		if cy<0-self.size:
-			cy=self.size+700-1
-		elif cy>700+self.size:
+			cy=self.size+s.HEIGHT-1
+		elif cy>s.HEIGHT+self.size:
 			cy = 0-self.size+1
 
 		self.centerpoint= (math.floor(cx+vx),math.floor(cy+vy))

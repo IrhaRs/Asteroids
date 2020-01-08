@@ -8,6 +8,7 @@ from Objects import Ship,Astroid
 from lib import Collision
 from res import GameState as gs
 import copy
+import Settings as s
 
 pygame.init()
 pygame.font.init()
@@ -15,7 +16,7 @@ pygame.font.init()
 fps = 30
 fpsClock = pygame.time.Clock()
  
-width, height = 1000, 700
+width, height = s.WIDTH, s.HEIGHT
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Astroids by Irha")
 
@@ -60,15 +61,15 @@ while True:
 	screen.fill((0, 0, 0))
 	keys=pygame.key.get_pressed()
 	if game_state==gs.Gamestate.PLAYING:
-		if keys[K_UP]:
+		if keys[s.FORWARD]:
 			ship.move()
 		else:
 			ship.loseSpeed()
-		if keys[K_LEFT]:
+		if keys[s.LEFT]:
 			ship.rotate(-5)
-		if keys[K_RIGHT]:
+		if keys[s.RIGHT]:
 			ship.rotate(5)
-		if keys[K_RETURN]:
+		if keys[s.SHOOT]:
 			ship.shoot()
 	else:
 		if keys[K_SPACE]:

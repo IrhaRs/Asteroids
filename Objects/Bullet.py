@@ -1,6 +1,7 @@
 import pygame
 import math
 from Objects import Ship
+import Settings as s
 
 class Bullet:
 	def __init__(self,x,y,direction,name,ship):
@@ -12,7 +13,7 @@ class Bullet:
 		self.id = name
 		self.ship = ship
 		self.endvec = ((-self.directionvector[0]) *self.velocity,(-self.directionvector[1]) *self.velocity)
-		self.debug = False
+		self.debug = s.DEBUG
 
 	def getAABBShape(self,padding):
 		#get line
@@ -70,11 +71,11 @@ class Bullet:
 
 		if cx<0-10:
 			self.die()
-		elif cx>1000+10:
+		elif cx>s.WIDTH+10:
 			self.die()
 		if cy<0-10:
 			self.die()
-		elif cy>700+10:
+		elif cy>s.HEIGHT+10:
 			self.die()
 		self.position= (math.floor(cx+vx),math.floor(cy+vy))
 
