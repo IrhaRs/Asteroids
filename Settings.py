@@ -11,4 +11,4 @@ SHOOT = K_SPACE
 
 
 #DEV
-DEBUG = True
+DEBUG = False
