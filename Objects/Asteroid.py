@@ -3,12 +3,12 @@ import math
 import Settings as s
 
 
-class Astroid:
+class Asteroid:
 	def __init__(self,name,rotation,x,y,size):
 		self.id = name
 		self.centerpoint = (x,y)
 		self.rotation = rotation
-		self.directionvector = (math.cos(math.radians(self.rotation)),math.sin(math.radians(self.rotation))) #direction of the astroid
+		self.directionvector = (math.cos(math.radians(self.rotation)),math.sin(math.radians(self.rotation))) #direction of the asteroid
 		self.scale = 10
 		self.size = size*self.scale
 		self.velocity = 100/(self.size/2)
